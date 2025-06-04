@@ -1,0 +1,143 @@
+{
+  "server": {
+    "listen_addr": ":443",
+    "tls_cert_file": "/etc/event-forwarder/certs/server.crt",
+    "tls_key_file": "/etc/event-forwarder/certs/server.key",
+    "read_timeout": "10s",
+    "write_timeout": "10s",
+    "idle_timeout": "120s",
+    "read_header_timeout": "5s",
+    "shutdown_timeout": "30s",
+    "max_body_size": 2097152,
+    "max_header_bytes": 1048576,
+    "tls_min_version": "1.2",
+    "enable_http2": true
+  },
+  "syslog": {
+    "address": "127.0.0.1:514",
+    "protocol": "tcp",
+    "facility": "local0",
+    "pool_size": 10,
+    "timestamp_format": "Jan _2 15:04:05",
+    "tag": "security-events",
+    "max_body_size": "8096",
+    "connect_timeout": "5s",
+    "write_timeout": "2s",
+    "retry_interval": "5s",
+    "max_retries": 3
+  },
+  "cef": {
+    "version": "0",
+    "device_vendor": "Your Company",
+    "device_product": "Event Collector",
+    "device_version": "2.1",
+    "extensions": {
+      "deviceExternalId": "collector-001"
+    }
+  },
+  "field_mapping": {
+    "timestamp_field": ["timestamp", "event_time", "@timestamp", "time"],
+    "severity_field": ["severity", "level", "priority"],
+    "event_type_field": ["event_type", "type", "category", "action"],
+    "source_field": ["source", "src_ip", "source_ip", "client_ip"],
+    "destination_field": ["destination", "dst_ip", "dest_ip", "server_ip"],
+    "message_field": ["message", "description", "msg", "summary"],
+    "signature_field": ["signature", "rule_id", "alert_id"],
+    "cef_extensions": [
+      {
+        "name": "rt",
+        "mapping": {
+          "sources": [],
+          "transform": "",
+          "default": ""
+        }
+      },
+      {
+    	"name": "deviceExternalId",
+    	"mapping": {
+      	"sources": [],
+      	"transform": "",
+      	"default": ""
+       }
+      },
+      {
+        "name": "msg",
+        "mapping": {
+          "sources": [],
+          "transform": "",
+          "default": ""
+        }
+      },
+      {
+        "name": "suser",
+        "mapping": {
+          "sources": ["user", "username", "user.name", "account"],
+          "default": "unknown"
+        }
+      },
+      {
+        "name": "src",
+        "mapping": {
+          "sources": [],
+          "transform": "",
+          "default": ""
+        }
+      },
+      {
+        "name": "dst",
+        "mapping": {
+          "sources": [],
+          "transform": "",
+          "default": ""
+        }
+      }
+    ],
+    "severity_map": {
+      "low": "3",
+      "info": "3", 
+      "medium": "6",
+      "warning": "6",
+      "high": "8",
+      "error": "8",
+      "critical": "9"
+    },
+    "conditional_maps": []
+  },
+  "security": {
+    "enable_auth": false,
+    "api_keys": [],
+    "rate_limit": 500,
+    "rate_burst": 1000,
+    "rate_limit_window": "1s",
+    "allowed_ips": [
+      "127.0.0.1"
+    ],
+    "blocked_ips": [],
+    "require_https": true,
+    "csrf_protection": false,
+    "cors_enabled": false,
+    "cors_origins": []
+  },
+  "web": {
+    "enable_index": true,
+    "index_page": "",
+    "static_dir": ""
+  },
+  "logging": {
+    "local_only": false,
+    "local_log_file": "/var/log/event-forwarder/events.log",
+    "log_level": "info"
+  },
+   "protection": {
+    "max_memory_mb": 512,
+    "max_concurrent_requests": 50,
+    "request_timeout": "30s",
+    "max_json_depth": 5,
+    "max_field_count": 50,
+    "max_field_value_length": 5000,
+    "enable_panic_recovery": true,
+    "memory_check_interval": "30s",
+    "enable_circuit_breaker": true,
+    "circuit_breaker_limit": 10
+  }
+}
